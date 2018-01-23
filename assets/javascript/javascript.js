@@ -11,7 +11,6 @@ var watchListArray = []; // array of movies to watch (right hand side)
 var movieBank = []; // movies you've watched
 
 
-
 /////////////////////////////////
 // *** INITIALIZE FIREBASE *** //
 /////////////////////////////////
@@ -58,6 +57,7 @@ function showMovies(movieDiv) {
     for (var i = 0; i < moviesLimit; i++) {
         var movieTitle = movieDiv.results[i].title; // this gets the movie title from the ajax call
         var movieOverview = movieDiv.results[i].overview; // this gets the movie synopsis from the ajax call
+        var movieRating = "";
 
         var movieNum = 0; // local variable for console logging purposes
         movieNum = i + 1; // for console logging purposes
@@ -65,6 +65,7 @@ function showMovies(movieDiv) {
 
         var movieImgURL = movieDiv.results[i].poster_path; // this gets the movie image from the ajax call
         var movieReleaseDate = movieDiv.results[i].release_date; // this gets the movie release date from the ajax call
+
 
         // BEGIN -- this code below will truncate the length of the synopsis
         var len = 125;
@@ -85,6 +86,39 @@ function showMovies(movieDiv) {
         // END -- code to truncate length of synopsis
 
 
+        // BEGIN -- ajax call to get information from Guidebox API
+          var guideboxSearchMovie = "http://api-public.guidebox.com/v2/search?api_key=86ac7cd06b73a9b09d4e372eedc141d9499a5cf4&type=movie&field=title&query=" + movieTitle;
+
+          $.ajax({
+            url: guideboxSearchMovie,
+            method: "GET"
+          }). done(function(guideboxMovieObject) {
+            guideboxSources(guideboxMovieObject);
+          });
+
+          function guideboxSources(guideboxMovieObject) {
+            var movieData = "http://api-public.guidebox.com//v2/movies/" + guideboxMovieObject.results[0].id + "?api_key=86ac7cd06b73a9b09d4e372eedc141d9499a5cf4";
+
+            $.ajax({
+              url: movieData,
+              method: "GET"
+            }). done(function(guideboxMovieData){
+              console.log(guideboxMovieData);
+              guideboxHovercardInfo(guideboxMovieData);
+            });
+          };
+
+          function guideboxHovercardInfo(guideboxMovieData) {
+            console.log("in theaters?: " + guideboxMovieData.in_theaters);
+            console.log("rating: " + guideboxMovieData.rating);
+            console.log("release date: " + guideboxMovieData.release_date);
+
+
+          }
+
+        // END -- ajax call to Guidebox API
+
+
         // BEGIN -- the code below makes the movies show on screen AND makes the hovercards work
           var layoutArr = [
             "<li>",
@@ -94,6 +128,7 @@ function showMovies(movieDiv) {
             "<h3>#TITLE</h3>",
             "#OVERVIEW",
             "<button type='button' class='btn btn-primary youtube-link' data-toggle='modal' data-target='#myModal' data-title='#datatitle'>View the trailer</button>",
+            "#INSERTHERE",
             "</figcaption>",
             "</figure>",
             "</li>",
@@ -104,9 +139,10 @@ function showMovies(movieDiv) {
         layoutArr[4] = layoutArr[4].replace('#TITLE', movieTitle);
         layoutArr[5] = layoutArr[5].replace('#OVERVIEW', "<span class='overview-text'>" + movieOverview + "</span>");
         layoutArr[6] = layoutArr[6].replace('#datatitle', movieTitle);
+        layoutArr[7] = layoutArr[7].replace('#INSERTHERE', movieRating);
         var layoutString = layoutArr.join('');
         htmlString += layoutString;
-        console.log(htmlString);
+        // console.log(htmlString);
 
     }
       $(".movieDB").html(listTag + htmlString + listCloseTag);
