@@ -1,57 +1,39 @@
-/*font-family: 'Amatic SC', cursive;
-font-family: 'Economica', sans-serif;
-font-family: 'News Cycle', sans-serif;
-*/
 body {
-	background-color: lightgrey;
+	background-color: #708090;
 }
+
+
+
+#home1 {
+	margin-top: 8%;
+	font-size: 50px;
+	font-weight: bold;
+	color: midnightblue;
+	font-family: 'Amatic SC', cursive;
+}
+
+#mmb1 {
+	margin-top: 20%;
+	font-size: 30px;
+	color: darkgrey;
+	font-weight: bold;
+	font-family: 'Amatic SC', cursive;
+}
+
 
 .container {
 	width: 100%;
-	max-width:1300px;
-	/*margin: 2%;*/
-	clear: both;
-	padding: 0px;
-	margin-left: -15px;
-	}
-
-/*.col-12 !important{
-	margin: 0;
-	padding: 0;
-}*/
-
-.navbar {
-	height: 120px;
-	background-size: 350px;
-	font-size: 20px;
-	font-weight: bold;
-	border-bottom: 1px solid grey;
-
+	max-width:1600px;
 }
 
-.row {
-	margin-left: 3%;
-}
 
 #popcornImg {
 	width: 250px;
 }
 
-#home1, #home2 {
-	margin-left: 30px;
-	text-align: center;
-	font-family: 'Amatic SC', cursive;
-	font-size: 40px;
-
+.row {
+	margin-left: 4%;
 }
-
-#mmb1, #mmb2 {
-	margin-left: 30px;
-	text-align: center;
-	font-family: 'Amatic SC', cursive;
-	font-size: 40px;
-}
-
 
 .top-menu {
 	background: white;
@@ -63,25 +45,35 @@ body {
 
 
 #title-container {
-	width: 100%;
+	/* width: 100%; */
+	margin-right: 40px;
 }
 
 #browse-header {
- margin-left: 25px;
- margin-right: -25px;
+	color: midnightblue;
+	font-size: 45px;
+	text-align: center;
+	padding: 1%;
+	padding-right: 25%;
+	font-weight: bold;
+
 }
 
 #dropdown-container {
-	padding-right: 0;
+	/* padding-right: 0; */
 }
 
 #watch {
+	color: midnightblue;
 	background: white;
-	height: 50px;
+	height: 90px;
+	padding: 1%;
+	font-size: 45px;
+	font-weight: bolder;
 }
 
 #top20 {
-	background-color: skyblue;
+	background-color: white;
 	margin-top: 2%;
 	margin-right: 2%;
 	float: left;
@@ -91,39 +83,31 @@ body {
 	font-size: 60px;
 }
 
+.movieposter {
+	height: 160px;
+}
+
+
+
 #dropdownMenuButton {
-	background-color: #058295;
+	background-color: midnightblue;
 	height: 40px;
-	vertical-align: middle;
+	/* vertical-align: middle; */
 	font-family: 'Amatic SC', cursive;
+	font-size: 20px;
+	font-weight: bolder;
 	margin: 0;
 }
 
-/*.dropbtn {
-    background-color: black;
-    color: white;
-    font-size: 16px;
-    border: none;
-		padding-left: 10px;
-		padding-right: 10px;
-}*/
-
-.dropdown {
-		margin-top: 10%;
-    float: right;
-}
 
 .dropdown-content {
     display: none;
     position: absolute;
     background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
 }
 
 .dropdown-content a {
-    color: black;
+    color: midnightblue;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
@@ -140,10 +124,9 @@ body {
 }
 
 #toWatch {
-  background-color: skyblue;
+  background-color: white;
 	color: black;
   margin-top: 2%;
-  height: 650px;
 	text-align: center;
 	font-family: 'Amatic SC', cursive;
 	font-size: 40px;
@@ -152,7 +135,7 @@ body {
 /* MOVIE BANK PAGE STYLING */
 
 #myMovieBank {
-  background-color: skyblue;
+  background-color: white;
 	color: black;
   margin-top: 2%;
   height: 600px;
@@ -165,23 +148,14 @@ body {
 /* added by lissa - will clean up later */
 .movieDB {
 	text-align: center;
-	margin: 20px;
+	margin-right: 7%;
+	padding: 5%;
 }
 
 img[id*="browseMovie"] {
 	margin: 5px;
 	border-radius: 5px;
 }
-
-#browse-header {
-	font-size: 30px;
-	text-align: center;
-	padding: 2%;
-	padding-left: 25%;
-
-}
-
-
 
 
 .buttonsArea {
@@ -192,6 +166,9 @@ img[id*="browseMovie"] {
 
 #dropdown-genres {
   position: absolute;
+	font-size: 25px;
+	color: midnightblue;
+	text-align: center;
   top: 100%;
   right: 0;
   margin-left: -100px;
