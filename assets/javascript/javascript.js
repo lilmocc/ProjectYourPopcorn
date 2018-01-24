@@ -11,7 +11,6 @@ var watchListArray = []; // array of movies to watch (right hand side)
 var movieBank = []; // movies you've watched
 
 
-
 /////////////////////////////////
 // *** INITIALIZE FIREBASE *** //
 /////////////////////////////////
@@ -30,34 +29,35 @@ var movieBank = []; // movies you've watched
  var database = firebase.database(); // create reference to firebase
 
 
-
 /////////////////////////////////////
 // *** MOVIES TO SHOW ON LOAD *** //
 ////////////////////////////////////
 
 // ajax call to pull initial movie browse list "Most Popular""
-  var themoviedbMostPopular = "https://api.themoviedb.org/3/movie/popular?api_key=6aef78f9dbb8761ef7757105efd6b161&language=en-US&page=1"
+var themoviedbMostPopular = "https://api.themoviedb.org/3/movie/popular?api_key=6aef78f9dbb8761ef7757105efd6b161&language=en-US&page=1"
 
-  $.ajax({
-    url: themoviedbMostPopular,
-    method: "GET"
-  }). done(function(response){
-    console.log(response);
-    showMovies(response);
-  })
+$.ajax({
+  url: themoviedbMostPopular,
+  method: "GET"
+}). done(function(response){
+  console.log(response);
+  showMovies(response);
+})
 
 // display the "Most Popular" browse list on the page
 function showMovies(movieDiv) {
-  $(".movieDB").empty(); // empty the top 20 browse movies
+    $(".movieDB").empty(); // empty the top 20 browse movies
 
     var moviesLimit = 20; // # of movies to show on page
     var htmlString = ""; // this will be the HTML string we create and will append to the page
     var listTag = "<ul class='grid cs-style-1'>"; // needed for the hovercard
     var listCloseTag = "</ul>"; // needed for the hovercard
 
+    // BEGIN -- for loop to loop through 20 movies
     for (var i = 0; i < moviesLimit; i++) {
         var movieTitle = movieDiv.results[i].title; // this gets the movie title from the ajax call
         var movieOverview = movieDiv.results[i].overview; // this gets the movie synopsis from the ajax call
+        var movieRating = "";
 
         var movieNum = 0; // local variable for console logging purposes
         movieNum = i + 1; // for console logging purposes
@@ -65,6 +65,7 @@ function showMovies(movieDiv) {
 
         var movieImgURL = movieDiv.results[i].poster_path; // this gets the movie image from the ajax call
         var movieReleaseDate = movieDiv.results[i].release_date; // this gets the movie release date from the ajax call
+
 
         // BEGIN -- this code below will truncate the length of the synopsis
         var len = 125;
@@ -85,6 +86,37 @@ function showMovies(movieDiv) {
         // END -- code to truncate length of synopsis
 
 
+        // BEGIN -- ajax call to get information from Guidebox API
+        var guideboxSearchMovie = "http://api-public.guidebox.com/v2/search?api_key=86ac7cd06b73a9b09d4e372eedc141d9499a5cf4&type=movie&field=title&query=" + movieTitle;
+
+        $.ajax({
+          url: guideboxSearchMovie,
+          method: "GET"
+        }). done(function(guideboxMovieObject) {
+          guideboxSources(guideboxMovieObject);
+        });
+
+        function guideboxSources(guideboxMovieObject) {
+            var movieData = "http://api-public.guidebox.com//v2/movies/" + guideboxMovieObject.results[0].id + "?api_key=86ac7cd06b73a9b09d4e372eedc141d9499a5cf4";
+
+            $.ajax({
+              url: movieData,
+              method: "GET"
+            }). done(function(guideboxMovieData){
+              console.log(guideboxMovieData);
+              guideboxHovercardInfo(guideboxMovieData);
+            });
+          };
+
+        function guideboxHovercardInfo(guideboxMovieData) {
+            console.log("in theaters?: " + guideboxMovieData.in_theaters);
+            console.log("rating: " + guideboxMovieData.rating);
+            console.log("release date: " + guideboxMovieData.release_date);
+          }
+
+        // END -- ajax call to Guidebox API
+
+
         // BEGIN -- the code below makes the movies show on screen AND makes the hovercards work
           var layoutArr = [
             "<li>",
@@ -95,6 +127,7 @@ function showMovies(movieDiv) {
             "#OVERVIEW",
             "<button type='button' class='btn btn-primary youtube-link' data-toggle='modal' data-target='#myModal' data-title='#datatitle'>View the trailer</button>",
             "<button type='button' class='btn btn-primary addtomywatchlist' data-title='#datatitle'>AddToMyWatchlist</button>",
+            "#INSERTHERE",
             "</figcaption>",
             "</figure>",
             "</li>",
@@ -105,32 +138,30 @@ function showMovies(movieDiv) {
         layoutArr[4] = layoutArr[4].replace('#TITLE', movieTitle);
         layoutArr[5] = layoutArr[5].replace('#OVERVIEW', "<span class='overview-text'>" + movieOverview + "</span>");
         layoutArr[6] = layoutArr[6].replace('#datatitle', movieTitle);
+        layoutArr[7] = layoutArr[7].replace('#INSERTHERE', movieRating);
         var layoutString = layoutArr.join('');
         htmlString += layoutString;
-        console.log(htmlString);
-
     }
       $(".movieDB").html(listTag + htmlString + listCloseTag);
       // END -- code for showing movies and hovercards
     };
+    // END -- for loop
 
 
-
-
-  ///////////////////////////////////////////
-  // *** MOVIES TO SHOW FOR EACH GENRE *** //
-  //////////////////////////////////////////
+///////////////////////////////////////////
+// *** MOVIES TO SHOW FOR EACH GENRE *** //
+//////////////////////////////////////////
 
 $("#dropdown-genres a").click(function() { // on click function for choosing a genre on the dropdown menu
   event.preventDefault();
 
-  var genreCode = $(this).attr("data-genre"); // this pulls the genre code from the movie clicked - comes from HTML file
-  var genreName = $(this).attr("data-genrename"); // this pulls the genre name from the movie clicked - comes from HTML file
+    var genreCode = $(this).attr("data-genre"); // this pulls the genre code from the movie clicked - comes from HTML file
+    var genreName = $(this).attr("data-genrename"); // this pulls the genre name from the movie clicked - comes from HTML file
 
-  $("#browse-header").html(genreName); // this changes the genre header on the page
+    $("#browse-header").html(genreName); // this changes the genre header on the page
 
-  // URL for the API call, which is based on the genre that is chosen from the dropdown
-  var themoviedbGenreURL = "https://api.themoviedb.org/3/genre/" + genreCode + "/movies?" + "api_key=6aef78f9dbb8761ef7757105efd6b161" + "&language=en-US&include_adult=false&sort_by=created_at.asc"
+    // URL for the API call, which is based on the genre that is chosen from the dropdown
+    var themoviedbGenreURL = "https://api.themoviedb.org/3/genre/" + genreCode + "/movies?" + "api_key=6aef78f9dbb8761ef7757105efd6b161" + "&language=en-US&include_adult=false&sort_by=created_at.asc"
 
     $.ajax({
       url: themoviedbGenreURL,
@@ -147,6 +178,7 @@ $("#dropdown-genres a").click(function() { // on click function for choosing a g
       var htmlString = ""; // this will be the HTML string we create and will append to the page
       var listTag = "<ul class='grid cs-style-1'>"; // needed for the hovercard
       var listCloseTag = "</ul>"; // needed for the hovercard
+
 
       for (var i = 0; i < moviesLimit; i++) {
 
@@ -176,7 +208,7 @@ $("#dropdown-genres a").click(function() { // on click function for choosing a g
 
 
           // BEGIN -- the code below makes the movies show on screen AND makes the hovercards work
-            var layoutArr = [
+          var layoutArr = [
               "<li>",
               "<figure>",
               "#IMAGE",
@@ -189,7 +221,6 @@ $("#dropdown-genres a").click(function() { // on click function for choosing a g
               "</li>",
             ]
 
-
           layoutArr[2] = "<img src='https://image.tmdb.org/t/p/w92/" + movieImgURL + "' data-title='" + movieTitle + "' data-releasedate='" + movieReleaseDate + "' id='browseMovie" + i + "' data-state='unselected' class='movieposter'>";
           $(layoutArr[2]).addClass("movieposter");
           layoutArr[4] = layoutArr[4].replace('#TITLE', movieTitle);
@@ -199,7 +230,6 @@ $("#dropdown-genres a").click(function() { // on click function for choosing a g
       }
         $(".movieDB").html(listTag + htmlString + listCloseTag);
         // END -- code for showing movies and hovercards
-
     };
   });
 
@@ -207,8 +237,6 @@ $("#dropdown-genres a").click(function() { // on click function for choosing a g
 //////////////////////////
 // *** YOUTUBE API *** //
 /////////////////////////
-
-
 
 $('body').on('click', '.youtube-link', function(){
   // $('#player').append.attr('src', '.movieposter')
@@ -250,21 +278,6 @@ done(function(youTubeResponse){
 // }
 
 })
-
-
-
-///////////////////////////
-// *** GUIDEBOX API *** //
-//////////////////////////
-
-
-
-
-
-
-/////////////////////////////////
-// *** ON CLICK FUNCTIONS *** //
-///////////////////////////////
 
 
 ////////////////////
