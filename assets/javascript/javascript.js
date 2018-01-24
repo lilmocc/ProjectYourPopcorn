@@ -11,6 +11,7 @@ var watchListArray = []; // array of movies to watch (right hand side)
 var movieBank = []; // movies you've watched
 
 
+
 /////////////////////////////////
 // *** INITIALIZE FIREBASE *** //
 /////////////////////////////////
@@ -27,6 +28,7 @@ var movieBank = []; // movies you've watched
  firebase.initializeApp(config);
 
  var database = firebase.database(); // create reference to firebase
+
 
 
 /////////////////////////////////////
@@ -57,7 +59,6 @@ function showMovies(movieDiv) {
     for (var i = 0; i < moviesLimit; i++) {
         var movieTitle = movieDiv.results[i].title; // this gets the movie title from the ajax call
         var movieOverview = movieDiv.results[i].overview; // this gets the movie synopsis from the ajax call
-        var movieRating = "";
 
         var movieNum = 0; // local variable for console logging purposes
         movieNum = i + 1; // for console logging purposes
@@ -146,11 +147,26 @@ function showMovies(movieDiv) {
         layoutArr[4] = layoutArr[4].replace('#TITLE', movieTitle);
         layoutArr[5] = layoutArr[5].replace('#OVERVIEW', "<span class='overview-text'>" + movieOverview + "</span>");
         layoutArr[6] = layoutArr[6].replace('#datatitle', movieTitle);
+        layoutArr[7] = layoutArr[7].replace('#datatitle', movieTitle);
         layoutArr[8] = layoutArr[8].replace('#INSERTHERE', "<span class='overview-text'>Released on: " + movieReleaseDate + "</span>");
         var layoutString = layoutArr.join('');
         htmlString += layoutString;
     }
       $(".movieDB").html(listTag + htmlString + listCloseTag);
+
+      $('.addtomywatchlist').on('click', function() {
+      // console.log(this);
+      console.log($(this));
+
+      var movieTitle = $(this)[0].parentElement.parentElement.firstChild;
+
+      console.log(movieTitle);
+
+      $("#toWatch").append(movieTitle);
+      $(this).hide();
+
+
+    });
       // END -- code for showing movies and hovercards / for loop
     };
 
@@ -236,12 +252,25 @@ $("#dropdown-genres a").click(function() { // on click function for choosing a g
           layoutArr[4] = layoutArr[4].replace('#TITLE', movieTitle);
           layoutArr[5] = layoutArr[5].replace('#OVERVIEW', "<span class='overview-text'>" + movieOverview + "</span>");
           layoutArr[6] = layoutArr[6].replace('#datatitle', movieTitle);
+          layoutArr[7] = layoutArr[7].replace('#datatitle', movieTitle);
           layoutArr[8] = layoutArr[8].replace('#INSERTHERE', "<span class='overview-text'>Released on: " + movieReleaseDate + "</span>");
           var layoutString = layoutArr.join('');
           htmlString += layoutString;
       }
         $(".movieDB").html(listTag + htmlString + listCloseTag);
         // END -- code for showing movies and hovercards
+        $('.addtomywatchlist').on('click', function() {
+    // console.log(this);
+    console.log($(this));
+
+    var movieTitle = $(this)[0].parentElement.parentElement.firstChild;
+
+    console.log(movieTitle);
+
+    $("#toWatch").append(movieTitle);
+      $(this).hide();
+
+  })
     };
   });
 
