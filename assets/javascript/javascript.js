@@ -126,6 +126,7 @@ function showMovies(movieDiv) {
             "<h3>#TITLE</h3>",
             "#OVERVIEW",
             "<button type='button' class='btn btn-primary youtube-link' data-toggle='modal' data-target='#myModal' data-title='#datatitle'>View the trailer</button>",
+            "<button type='button' class='btn btn-primary addtomywatchlist' data-title='#datatitle'>AddToMyWatchlist</button>",
             "#INSERTHERE",
             "</figcaption>",
             "</figure>",
