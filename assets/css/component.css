@@ -43,7 +43,7 @@
 	padding: 0;
 	color: #fff;
 	font-weight: bold;
-	font-size: 1.2rem;
+	font-size: 2.0rem;
 }
 
 /* .grid figcaption span:before {
@@ -52,10 +52,10 @@
 
 .grid figcaption a {
 	text-align: center;
-	padding: 5px 10px;
-	border-radius: 5px;
+	/* padding: 5px 10px; */
+	/* border-radius: 5px; */
 	display: inline-block;
-	background: #ed4e6e;
+	background: none;
 	color: #fff;
 }
 
@@ -87,16 +87,17 @@
 
 .cs-style-1 figcaption h3 {
 	margin-top: 0px;
+		display: inline-block;
 }
 
 .cs-style-1 figcaption span {
-	font-size: 0.7rem;
-	font-color: #007FFF;
+	font-size: 0.9rem;
+	/* font-color: #007FFF; */
 	display: inline-block;
 }
 
 .cs-style-1 figcaption a {
-	margin-top: 5px;
+	/* margin-top: 5px; */
 }
 
 

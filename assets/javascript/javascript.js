@@ -64,7 +64,42 @@ function showMovies(movieDiv) {
         console.log("Most Popular #" + movieNum + ": " + movieTitle);
 
         var movieImgURL = movieDiv.results[i].poster_path; // this gets the movie image from the ajax call
-        var movieReleaseDate = movieDiv.results[i].release_date; // this gets the movie release date from the ajax call
+        var movieReleaseDate = new Date(movieDiv.results[i].release_date).toString("MMM d, yyyy"); // this gets the movie release date from the ajax call
+
+
+
+        // $("#release-date").html("<div>Released: " + movieReleaseDate + "<div");
+
+        // BEGIN -- ajax call to get information from Guidebox API
+        // RAN OUT OF TRIAL API CALLS FOR GUIDEBOX!!
+                  // var guideboxSearchMovie = "http://api-public.guidebox.com/v2/search?api_key=86ac7cd06b73a9b09d4e372eedc141d9499a5cf4&type=movie&field=title&query=" + movieTitle;
+                  //
+                  // $.ajax({
+                  //   url: guideboxSearchMovie,
+                  //   method: "GET"
+                  // }). done(function(guideboxMovieObject) {
+                  //   guideboxSources(guideboxMovieObject);
+                  // });
+                  //
+                  // function guideboxSources(guideboxMovieObject) {
+                  //     var movieData = "http://api-public.guidebox.com//v2/movies/" + guideboxMovieObject.results[0].id + "?api_key=86ac7cd06b73a9b09d4e372eedc141d9499a5cf4";
+                  //
+                  //     $.ajax({
+                  //       url: movieData,
+                  //       method: "GET"
+                  //     }). done(function(guideboxMovieData){
+                  //       console.log(guideboxMovieData);
+                  //       guideboxHovercardInfo(guideboxMovieData);
+                  //     });
+                  //   };
+                  //
+                  // function guideboxHovercardInfo(guideboxMovieData) {
+                  //     console.log("in theaters?: " + guideboxMovieData.in_theaters);
+                  //     console.log("rating: " + guideboxMovieData.rating);
+                  //     console.log("release date: " + guideboxMovieData.release_date);
+                  //     $("#additional-movie-info").html("<div>Rating: " + guideboxMovieData.rating + "</div>");
+                  //   }
+        // END -- ajax call to Guidebox API
 
 
         // BEGIN -- this code below will truncate the length of the synopsis
@@ -72,13 +107,14 @@ function showMovies(movieDiv) {
         var overview = movieOverview
         if (overview) {
           var truncate = movieOverview;
+
           if (truncate.length > len) {
             truncate = truncate.substring(0, len);
             truncate = truncate.replace(/\w+$/, '');
             truncate += "...";
-            truncate += '<br><a href="#" ' +
+            truncate += '<a href="#" ' +
               'onclick="this.parentNode.innerHTML=' +
-              'unescape(\''+escape(movieOverview)+'\');return false;">' +
+              'unescape(\''+escape(movieOverview)+'\');return false;" class="#overview-text">' +
               'read more<\/a>';
             movieOverview = truncate;
           }
@@ -86,35 +122,7 @@ function showMovies(movieDiv) {
         // END -- code to truncate length of synopsis
 
 
-        // BEGIN -- ajax call to get information from Guidebox API
-        var guideboxSearchMovie = "http://api-public.guidebox.com/v2/search?api_key=86ac7cd06b73a9b09d4e372eedc141d9499a5cf4&type=movie&field=title&query=" + movieTitle;
 
-        $.ajax({
-          url: guideboxSearchMovie,
-          method: "GET"
-        }). done(function(guideboxMovieObject) {
-          guideboxSources(guideboxMovieObject);
-        });
-
-        function guideboxSources(guideboxMovieObject) {
-            var movieData = "http://api-public.guidebox.com//v2/movies/" + guideboxMovieObject.results[0].id + "?api_key=86ac7cd06b73a9b09d4e372eedc141d9499a5cf4";
-
-            $.ajax({
-              url: movieData,
-              method: "GET"
-            }). done(function(guideboxMovieData){
-              console.log(guideboxMovieData);
-              guideboxHovercardInfo(guideboxMovieData);
-            });
-          };
-
-        function guideboxHovercardInfo(guideboxMovieData) {
-            console.log("in theaters?: " + guideboxMovieData.in_theaters);
-            console.log("rating: " + guideboxMovieData.rating);
-            console.log("release date: " + guideboxMovieData.release_date);
-          }
-
-        // END -- ajax call to Guidebox API
 
 
         // BEGIN -- the code below makes the movies show on screen AND makes the hovercards work
@@ -138,14 +146,14 @@ function showMovies(movieDiv) {
         layoutArr[4] = layoutArr[4].replace('#TITLE', movieTitle);
         layoutArr[5] = layoutArr[5].replace('#OVERVIEW', "<span class='overview-text'>" + movieOverview + "</span>");
         layoutArr[6] = layoutArr[6].replace('#datatitle', movieTitle);
-        layoutArr[7] = layoutArr[7].replace('#INSERTHERE', movieRating);
+        layoutArr[8] = layoutArr[8].replace('#INSERTHERE', "<span class='overview-text'>Released on: " + movieReleaseDate + "</span>");
         var layoutString = layoutArr.join('');
         htmlString += layoutString;
     }
       $(".movieDB").html(listTag + htmlString + listCloseTag);
-      // END -- code for showing movies and hovercards
+      // END -- code for showing movies and hovercards / for loop
     };
-    // END -- for loop
+
 
 
 ///////////////////////////////////////////
@@ -186,7 +194,7 @@ $("#dropdown-genres a").click(function() { // on click function for choosing a g
           var movieOverview = movieDiv.results[i].overview; // this gets the movie synopsis from the ajax call
 
           var movieImgURL = movieDiv.results[i].poster_path; // this gets the movie image from the ajax call
-          var movieReleaseDate = movieDiv.results[i].release_date; // this gets the movie release date from the ajax call
+            var movieReleaseDate = new Date(movieDiv.results[i].release_date).toString("MMM d, yyyy"); // this gets the movie release date from the ajax call
 
           // BEGIN -- this code below will truncate the length of the synopsis
           var len = 125; // total number of letters we'll allow
@@ -197,7 +205,7 @@ $("#dropdown-genres a").click(function() { // on click function for choosing a g
               truncate = truncate.substring(0, len); // this prints out only the first 125 characters
               truncate = truncate.replace(/\w+$/, ''); // this makes sure a word isn't cut off in the middle of the word
               truncate += "...";
-              truncate += '<br><a href="#" ' +
+              truncate += '<a href="#" ' +
                 'onclick="this.parentNode.innerHTML=' +
                 'unescape(\''+escape(movieOverview)+'\');return false;">' +
                 'read more<\/a>'; // this adds a "read more" link that will show the rest of the synopsis when clicked
@@ -209,22 +217,26 @@ $("#dropdown-genres a").click(function() { // on click function for choosing a g
 
           // BEGIN -- the code below makes the movies show on screen AND makes the hovercards work
           var layoutArr = [
-              "<li>",
-              "<figure>",
-              "#IMAGE",
-              "<figcaption>",
-              "<h3>#TITLE</h3>",
-              "#OVERVIEW",
-              "<button type='button' class='btn btn-primary youtube-link' data-toggle='modal' data-target='#myModal' data-title='#datatitle'>View the trailer</button>",
-              "</figcaption>",
-              "</figure>",
-              "</li>",
+            "<li>",
+            "<figure>",
+            "#IMAGE",
+            "<figcaption>",
+            "<h3>#TITLE</h3>",
+            "#OVERVIEW",
+            "<button type='button' class='btn btn-primary youtube-link' data-toggle='modal' data-target='#myModal' data-title='#datatitle'>View the trailer</button>",
+            "<button type='button' class='btn btn-primary addtomywatchlist' data-title='#datatitle'>AddToMyWatchlist</button>",
+            "#INSERTHERE",
+            "</figcaption>",
+            "</figure>",
+            "</li>",
             ]
 
           layoutArr[2] = "<img src='https://image.tmdb.org/t/p/w92/" + movieImgURL + "' data-title='" + movieTitle + "' data-releasedate='" + movieReleaseDate + "' id='browseMovie" + i + "' data-state='unselected' class='movieposter'>";
           $(layoutArr[2]).addClass("movieposter");
           layoutArr[4] = layoutArr[4].replace('#TITLE', movieTitle);
           layoutArr[5] = layoutArr[5].replace('#OVERVIEW', "<span class='overview-text'>" + movieOverview + "</span>");
+          layoutArr[6] = layoutArr[6].replace('#datatitle', movieTitle);
+          layoutArr[8] = layoutArr[8].replace('#INSERTHERE', "<span class='overview-text'>Released on: " + movieReleaseDate + "</span>");
           var layoutString = layoutArr.join('');
           htmlString += layoutString;
       }
