@@ -58,7 +58,7 @@ body {
 	padding: 1%;
 	padding-right: 25%;
 	font-weight: bold;
-
+	margin-left: auto;
 }
 
 #dropdown-container {
@@ -197,6 +197,8 @@ h3 {
 		font-size: 1.3rem;
 		margin: 0px 3px;
 }
+
+
 
 /* .youtube-link {
 		font-size: 1.3rem;
