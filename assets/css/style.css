@@ -153,10 +153,7 @@ body {
 	text-align: center;
 	margin-right: 7%;
 	padding: 5%;
-  /* background-color: #708090;
-  border: 2px solid teal;
-  color: teal;
-	margin-bottom: 10%; */
+
 
 }
 
@@ -202,12 +199,14 @@ h3 {
 .addtomywatchlist, .youtube-link {
 		font-size: 1.3rem;
 		margin: 0px 2px;
+		background-color: teal;
+		border: none;
 }
 
 
 
 /* .youtube-link {
-		font-size: 1.3rem;
+
 } */
 
 /* .modal-dialog {
