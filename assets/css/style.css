@@ -62,6 +62,7 @@ body {
 }
 
 #dropdown-container {
+
 	/* padding-right: 0; */
 }
 
@@ -152,6 +153,11 @@ body {
 	text-align: center;
 	margin-right: 7%;
 	padding: 5%;
+  background-color: #708090;
+  border: 2px solid teal;
+  color: teal;
+	margin-bottom: 10%;
+
 }
 
 img[id*="browseMovie"] {
